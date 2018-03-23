@@ -5,12 +5,12 @@ import './index.css';
 import App from './App';
 import store from './reducers';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import { teal, lightBlue } from 'material-ui/colors';
+import { blue, red } from 'material-ui/colors';
 
 const theme = createMuiTheme({
   palette: {
-    primary: teal,
-    secondary: lightBlue,
+    primary: blue,
+    secondary: red,
   },
 });
 
@@ -20,6 +20,6 @@ ReactDOM.render(
       <App />
     </Provider>
   </MuiThemeProvider>
-,
+  ,
   document.getElementById('root')
 );

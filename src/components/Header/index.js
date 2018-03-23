@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import MenuIcon from 'material-ui-icons/Menu';
 import {
   AppBar,
+  IconButton,
   Toolbar,
   Typography,
-  Button,
-  IconButton,
 } from 'material-ui';
-import MenuIcon from 'material-ui-icons/Menu';
 
 const styles = {
   flex: {
@@ -22,21 +21,19 @@ const styles = {
 
 const ButtonAppBar = (props) => {
   const { classes } = props;
-  console.log(classes);
   return (
-      <AppBar position="static" color="primary">
-        <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="title" color="inherit" className={classes.flex}>
+    <AppBar position="static" color="primary">
+      <Toolbar>
+        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="title" color="inherit" className={classes.flex}>
             Retrospective tool
-          </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
+        </Typography>
+      </Toolbar>
+    </AppBar>
   );
-}
+};
 
 ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
