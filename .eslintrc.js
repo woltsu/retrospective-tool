@@ -26,6 +26,8 @@ module.exports = {
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "react/prop-types": 0,
+        "no-undef": 0
     }
 };

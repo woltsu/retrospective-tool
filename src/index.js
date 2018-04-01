@@ -7,6 +7,10 @@ import store from './reducers';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import { blue, red } from 'material-ui/colors';
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const theme = createMuiTheme({
   palette: {
     primary: blue,
