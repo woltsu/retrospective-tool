@@ -1,10 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-// IMPORT ALL REDUCERS HERE
+import uiReducer from './uiReducer';
+import notificationReducer from './notificationReducer';
 
 const combinedReducers = combineReducers({
-  // INSERT REDUCERS HERE:
-  // reducerName: reducer
+  ui: uiReducer,
+  notification: notificationReducer
 });
 
 const store = createStore(

@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { toggleDrawer } from '../../reducers/uiReducer';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import MenuIcon from 'material-ui-icons/Menu';
@@ -19,12 +21,12 @@ const styles = {
   },
 };
 
-const ButtonAppBar = (props) => {
+const Header = (props) => {
   const { classes } = props;
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
-        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+        <IconButton onClick={() => props.toggleDrawer()} className={classes.menuButton} color="inherit" aria-label="Menu">
           <MenuIcon />
         </IconButton>
         <Typography variant="title" color="inherit" className={classes.flex}>
@@ -35,8 +37,13 @@ const ButtonAppBar = (props) => {
   );
 };
 
-ButtonAppBar.propTypes = {
+Header.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ButtonAppBar);
+const connectedHeader = connect(
+  null,
+  { toggleDrawer }
+)(Header);
+
+export default withStyles(styles)(connectedHeader);

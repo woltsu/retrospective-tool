@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import CssBaseline from 'material-ui/CssBaseline';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import ExampleComponent from './components/ExampleComponent';
+import FrontPage from './components/FrontPage';
 import Header from './components/Header';
+import Drawer from './components/Drawer';
+import Notifications from './components/Notifications';
 
 const styles = {
   containerStyle: {
@@ -23,7 +25,9 @@ class App extends React.Component {
         <div className={classes.containerStyle}>
           <CssBaseline />          
           <Header />
-          <Route exact path='/' render={() => <ExampleComponent />} />
+          <Drawer />
+          <Notifications />
+          <Route exact path='/' render={() => <FrontPage />} />
         </div>
       </Router>
     );
