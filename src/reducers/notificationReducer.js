@@ -1,5 +1,5 @@
-const CREATE_NOTIFICATION = 'CREATE_NOTIFICATION';
-const REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION';
+const CREATE_NOTIFICATION = 'Create notification';
+const REMOVE_NOTIFICATION = 'Remove notification';
 
 const initialState = {
   notifications: []

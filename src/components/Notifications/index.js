@@ -9,7 +9,7 @@ const styles = {
     position: 'fixed',
     top: '15px',
     left: '50%',
-    transform: "translate(-50%)",
+    transform: 'translate(-50%)',
     zIndex: '1100'
   }
 };

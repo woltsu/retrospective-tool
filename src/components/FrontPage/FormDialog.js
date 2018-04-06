@@ -88,7 +88,7 @@ class FormDialog extends React.Component {
                 name='password'
                 margin='normal'
                 label='Password'
-                type="password"
+                type='password'
                 fullWidth
               />
               { this.state.errorMessage && <p className={classes.errorMessage}>{ this.state.errorMessage }</p> }

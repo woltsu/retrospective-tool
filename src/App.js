@@ -7,6 +7,7 @@ import FrontPage from './components/FrontPage';
 import Header from './components/Header';
 import Drawer from './components/Drawer';
 import Notifications from './components/Notifications';
+import Project from './components/Project';
 
 const styles = {
   containerStyle: {
@@ -28,6 +29,7 @@ class App extends React.Component {
           <Drawer />
           <Notifications />
           <Route exact path='/' render={() => <FrontPage />} />
+          <Route exact path='/project/:name' render={() => <Project />} />
         </div>
       </Router>
     );

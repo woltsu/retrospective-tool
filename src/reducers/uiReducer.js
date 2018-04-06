@@ -21,7 +21,7 @@ const reducer = (state = initialState, action) => {
       createFormOpened: !state.createFormOpened
     };
   }
-    
+        
   default: {
     return state;
   }
