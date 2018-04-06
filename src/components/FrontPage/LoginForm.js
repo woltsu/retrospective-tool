@@ -58,7 +58,6 @@ class LoginForm extends React.Component {
                 name='name'
                 label='Name'
                 type='text'
-                required
                 fullWidth
                 onChange={(e) => this.setState({ name: e.target.value })}
               />
