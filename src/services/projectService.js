@@ -11,3 +11,14 @@ export const create = async (newProject) => {
     return { error: 'Connection error' };
   }
 };
+
+export const login = async (credentials) => {
+  try {
+    let error = null;
+    const response = await axios.post(`${baseUrl}/login`, credentials)
+      .catch((e) => { error = e.response.data; });
+    return error ? error : response;
+  } catch (e) {
+    return { error: 'Connection error' };
+  }
+};

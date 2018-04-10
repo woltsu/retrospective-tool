@@ -3,24 +3,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Drawer from 'material-ui/Drawer';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import CreateIcon from 'material-ui-icons/Create';
+import List from 'material-ui/List';
 import { toggleDrawer, toggleCreateForm } from '../../reducers/uiReducer';
+import FrontPageListItems from './FrontPageListItems';
+import ProjectListItems from './ProjectListItems';
 
 const styles = {
-};
-
-const DrawerListItems = ({ actions }) => {
-  return (
-    <div>
-      <ListItem button onClick={() => actions.toggleCreateForm()}>
-        <ListItemIcon>
-          <CreateIcon />
-        </ListItemIcon>
-        <ListItemText primary='New project' />
-      </ListItem>
-    </div>
-  );
 };
 
 const AppDrawer = (props) => {
@@ -30,7 +18,8 @@ const AppDrawer = (props) => {
         <List role='button'
           onClick={() => props.toggleDrawer()}
           onKeyDown={() => props.toggleDrawer()}>
-          <DrawerListItems actions={props} />
+          {!props.hasProject && <FrontPageListItems actions={props} />}
+          {props.hasProject && <ProjectListItems actions={props} />}
         </List>
       </Drawer>
     </div>
@@ -43,7 +32,8 @@ AppDrawer.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    opened: state.ui.drawerOpened
+    opened: state.ui.drawerOpened,
+    hasProject: state.auth.project !== null
   };
 };
 
