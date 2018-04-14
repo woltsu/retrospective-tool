@@ -12,6 +12,22 @@ export const create = async (newProject) => {
   }
 };
 
+export const getProject = async ({ name, token }) => {
+  try {
+    let error = null;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const response = await axios.get(`${baseUrl}/${name}`, config)
+      .catch((e) => { error = e.response.data; });
+    return error ? error : response.data;
+  } catch (e) {
+    return { error: 'Connection error' };
+  }
+};
+
 export const login = async (credentials) => {
   try {
     let error = null;

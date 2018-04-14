@@ -4,7 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
-import { projectLogin } from '../../reducers/authReducer';
+import { projectLogin } from '../../reducers/projectReducer';
 
 const styles = {
   formStyle: {
@@ -86,7 +86,7 @@ class LoginForm extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    errorMessage: state.auth.errorMessage
+    errorMessage: state.project.errorMessage
   };
 };
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import CreateIcon from 'material-ui-icons/Create';
+import AddIcon from 'material-ui-icons/Add';
 
 const FrontPageListItems = ({ actions }) => {
   return (
     <div>
       <ListItem button onClick={() => actions.toggleCreateForm()}>
         <ListItemIcon>
-          <CreateIcon />
+          <AddIcon />
         </ListItemIcon>
         <ListItemText primary='New project' />
       </ListItem>

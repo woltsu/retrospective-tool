@@ -2,21 +2,21 @@ import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import uiReducer from './uiReducer';
 import notificationReducer from './notificationReducer';
-import authReducer from './authReducer';
+import projectReducer from './projectReducer';
 import persistState from 'redux-localstorage';
 
 const customSlicer = () => {
-  return (state) => ({ auth: { project: state.auth.project } });
+  return (state) => ({ project: { name: state.project.name, token: state.project.token }});
 };
 
 const enhancer = compose(
-  persistState('auth', { key: 'auth', slicer: customSlicer })
+  persistState('project', { key: 'project', slicer: customSlicer })
 );
 
 const combinedReducers = combineReducers({
   ui: uiReducer,
   notification: notificationReducer,
-  auth: authReducer,
+  project: projectReducer,
 });
 
 const store = createStore(
