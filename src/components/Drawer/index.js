@@ -33,7 +33,7 @@ AppDrawer.propTypes = {
 const mapStateToProps = (state) => {
   return {
     opened: state.ui.drawerOpened,
-    hasProject: state.auth.project !== null
+    hasProject: state.project.token !== null
   };
 };
 

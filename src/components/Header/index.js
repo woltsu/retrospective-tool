@@ -24,13 +24,13 @@ const styles = {
 const Header = (props) => {
   const { classes } = props;
   return (
-    <AppBar position="static" color="primary">
+    <AppBar position='sticky' color='primary'>
       <Toolbar>
         <IconButton onClick={() => props.toggleDrawer()} className={classes.menuButton} color="inherit" aria-label="Menu">
           <MenuIcon />
         </IconButton>
-        <Typography variant="title" color="inherit" className={classes.flex}>
-            Retrospective tool
+        <Typography variant='title' color='inherit' className={classes.flex}>
+          { (props.projectName && `Project ${props.projectName}`) || 'Retrospective tool' }
         </Typography>
       </Toolbar>
     </AppBar>
@@ -41,8 +41,14 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
+const mapStateToProps = (state) => {
+  return {
+    projectName: state.project.name
+  };
+};
+
 const connectedHeader = connect(
-  null,
+  mapStateToProps,
   { toggleDrawer }
 )(Header);
 
