@@ -38,3 +38,5 @@ export const login = async (credentials) => {
     return { error: 'Connection error' };
   }
 };
+
+export default { create, getProject, login };

@@ -10,7 +10,7 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import { toggleCreateForm } from '../../reducers/uiReducer';
-import { create } from '../../services/projectService';
+import projectService from '../../services/projectService';
 import { createNotification } from '../../reducers/notificationReducer';
 
 const styles = {
@@ -51,7 +51,7 @@ class FormDialog extends React.Component {
       newProject['password'] = password;
     }
 
-    const response = await create(newProject);
+    const response = await projectService.create(newProject);
     if (response.error) {
       this.setState({ error: true, errorMessage: response.error });
       return;
