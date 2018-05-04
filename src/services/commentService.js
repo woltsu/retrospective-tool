@@ -17,4 +17,20 @@ const create = async (comment, token) => {
   }
 };
 
-export default { create };
+const put = async (_id, newValues, token) => {
+  try {
+    let error = null;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const response = await axios.put(`${baseUrl}/${_id}`, newValues, config)
+      .catch((e) => { error = e.response.data; });
+    return error ? error : response.data;
+  } catch (e) {
+    return { error: 'Connection error' };
+  }
+};
+
+export default { create, put };

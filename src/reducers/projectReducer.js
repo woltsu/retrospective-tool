@@ -1,4 +1,4 @@
-import { login, getProject } from '../services/projectService';
+import projectService from '../services/projectService';
 import commentService from '../services/commentService';
 const PROJECT_LOGIN_SUCCESSFUL = 'Project login successful';
 const PROJECT_LOGIN_FAILURE = 'Project login failure';
@@ -6,6 +6,7 @@ const PROJECT_LOGOUT = 'Project logout';
 const SET_COMMENTS = 'Set comments';
 const SET_FETCHING = 'Set fetching';
 const ADD_COMMENT = 'Add comment';
+const UPDATE_COMMENT = 'Update comment';
 
 const initialState = {
   token: null,
@@ -55,6 +56,14 @@ const reducer = (state = initialState, action) => {
     };
   }
 
+  case UPDATE_COMMENT: {
+    const comment = action.payload;
+    return {
+      ...state,
+      comments: state.comments.map((c) => c._id === comment._id ? comment : c)
+    };
+  }
+
   case PROJECT_LOGOUT: {
     return initialState;
   }
@@ -67,7 +76,7 @@ const reducer = (state = initialState, action) => {
 
 export const projectLogin = (credentials) => {
   return async (dispatch) => {
-    const response = await login(credentials);
+    const response = await projectService.login(credentials);
     if (response.error) {
       dispatch({
         type: PROJECT_LOGIN_FAILURE,
@@ -93,7 +102,7 @@ export const setComments = (project) => {
       type: SET_FETCHING,
       payload: true
     });
-    const response = await getProject(project);
+    const response = await projectService.getProject(project);
     const comments = response.comments;
     dispatch({
       type: SET_COMMENTS,
@@ -111,6 +120,16 @@ export const createComment = (comment, token) => {
     const response = await commentService.create(comment, token);
     dispatch({
       type: ADD_COMMENT,
+      payload: response
+    });
+  };
+};
+
+export const toggleComment = (_id, important, token) => {
+  return async (dispatch) => {
+    const response = await commentService.put(_id, { important }, token);
+    dispatch({
+      type: UPDATE_COMMENT,
       payload: response
     });
   };
