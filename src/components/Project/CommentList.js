@@ -26,6 +26,10 @@ const styles = {
     zIndex: '2',
     padding: '10px 0 60px 0',
   },
+  headerTitle: {
+    fontSize: '20px',
+    color: 'rgba(0, 0, 0, 0.54)'
+  },
   loader: {
     margin: '10px auto 0 auto'
   },
@@ -72,8 +76,8 @@ class CommentList extends React.Component {
       <div>
         <div className={classes.commentList}>
           <Paper className={classes.header} elevation={1}>
-            <Typography align='center' variant='display1' component='h1'>
-              <FormLabel component='legend'>Filter</FormLabel>
+            <Typography align='center' component='div'>
+              <div className={classes.headerTitle}>Filter</div>
               <FormControlLabel control={
                 <Switch checked={this.state.starsOnly}
                   value='starsOnly'
