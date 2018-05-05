@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { CircularProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
-import { FormControlLabel, FormLabel } from 'material-ui/Form';
+import { FormControlLabel } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
 import moment from 'moment';
 import Comment from './Comment';
