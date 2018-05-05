@@ -12,7 +12,8 @@ const styles = {
   addButton: {
     position: 'fixed',
     bottom: '30px',
-    right: '35px'
+    right: '35px',
+    zIndex: '100'
   },
 };
 
