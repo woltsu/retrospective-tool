@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import Button from 'material-ui/Button';
 import CreateIcon from 'material-ui-icons/Create';
-import { setComments, addComment, updateComment } from '../../reducers/projectReducer';
+import { setComments, addComment, updateComment, onlyRemoveComment } from '../../reducers/projectReducer';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import projectService from '../../services/projectService';
@@ -37,7 +37,12 @@ class Project extends React.Component {
       name: this.props.projectName,
       token: this.props.projectToken
     });
-    projectService.connect(this.props.projectName, this.props.addComment, this.props.updateComment);
+    projectService.connect(
+      this.props.projectName,
+      this.props.addComment, 
+      this.props.updateComment,
+      this.props.onlyRemoveComment
+    );
   }
 
   componentWillUnmount = () => {
@@ -77,7 +82,7 @@ const mapStateToProps = (state) => {
 
 const ConnectedProject = connect(
   mapStateToProps,
-  { setComments, addComment, updateComment }
+  { setComments, addComment, updateComment, onlyRemoveComment }
 )(Project);
 
 export default withStyles(styles)(ConnectedProject);
