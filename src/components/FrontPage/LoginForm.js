@@ -69,11 +69,12 @@ class LoginForm extends React.Component {
                 fullWidth
               />
               <Button 
-                disabled={this.state.name === ''}
+                disabled={(this.state.name === '' || this.props.loginPending)}
                 type='submit' className={classes.formButton}
                 variant='raised'
                 color='primary'>
-              Login
+                {!this.props.loginPending && 'Login'}
+                {this.props.loginPending && 'Logging in...'}
               </Button>
             </form>
             { errorMessage && <div className={classes.errorMessage}>{ errorMessage }</div> }                    
@@ -86,7 +87,8 @@ class LoginForm extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    errorMessage: state.project.errorMessage
+    errorMessage: state.project.errorMessage,
+    loginPending: state.project.loginPending
   };
 };
 

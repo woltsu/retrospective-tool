@@ -1,5 +1,6 @@
 import projectService from '../services/projectService';
 import commentService from '../services/commentService';
+const PROJECT_LOGIN = 'Project login';
 const PROJECT_LOGIN_SUCCESSFUL = 'Project login successful';
 const PROJECT_LOGIN_FAILURE = 'Project login failure';
 const PROJECT_LOGOUT = 'Project logout';
@@ -10,29 +11,39 @@ const UPDATE_COMMENT = 'Update comment';
 const REMOVE_COMMENT = 'Remove comment';
 
 const initialState = {
+  loginPending: false,  
   token: null,
   name: null,
   errorMessage: null,
   comments: [],
-  fetching: false
+  fetching: false,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+  case PROJECT_LOGIN: {
+    return {
+      ...state,
+      loginPending: true
+    };
+  }
+    
   case PROJECT_LOGIN_SUCCESSFUL: {
     const { token, name } = action.payload;
     return {
       ...state,
       token,
       name,
-      errorMessage: ''        
+      errorMessage: '',
+      loginPending: false      
     };
   }
   
   case PROJECT_LOGIN_FAILURE: {
     return {
       ...state,
-      errorMessage: action.payload
+      errorMessage: action.payload,
+      loginPending: false
     };
   }
 
@@ -84,6 +95,9 @@ const reducer = (state = initialState, action) => {
 
 export const projectLogin = (credentials) => {
   return async (dispatch) => {
+    dispatch({
+      type: PROJECT_LOGIN
+    });
     const response = await projectService.login(credentials);
     if (response.error) {
       dispatch({
