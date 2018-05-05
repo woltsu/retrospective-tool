@@ -45,18 +45,18 @@ export const connect = async (name, addComment, updateComment) => {
   socket = await socketIOClient(baseUrl, { query: `name=${name}` });
   socket.on('add comment', (data) => addComment(data));
   socket.on('update comment', (data) => updateComment(data));
-}
+};
 
-export const disconnect = (name) => {
+export const disconnect = () => {
   socket.disconnect();
-}
+};
 
 export const emitAdd = async (data) => {
   socket.emit('add', data);
-}
+};
 
 export const emitUpdate = async (data) => {
   socket.emit('update', data);
-}
+};
 
 export default { create, getProject, login, connect, disconnect, emitAdd, emitUpdate };

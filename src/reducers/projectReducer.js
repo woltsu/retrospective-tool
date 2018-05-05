@@ -131,14 +131,14 @@ export const addComment = (comment) => {
     type: ADD_COMMENT,
     payload: comment
   };
-}
+};
 
 export const updateComment = (comment) => {
   return {
     type: UPDATE_COMMENT,
     payload: comment
   };
-}
+};
 
 export const toggleComment = (_id, important, token) => {
   return async (dispatch) => {

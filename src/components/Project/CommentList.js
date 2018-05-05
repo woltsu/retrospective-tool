@@ -50,8 +50,6 @@ const styles = theme => ({
 class CommentList extends React.Component {
   constructor(props) {
     super(props);
-    console.log('width', window.innerWidth);
-
     this.state = {
       starsOnly: false,
       oldestFirst: false

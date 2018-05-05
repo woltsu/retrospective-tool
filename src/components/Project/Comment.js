@@ -47,7 +47,7 @@ class Comment extends React.Component {
 
     this.state = {
       important: false
-    }
+    };
   }
 
   componentDidMount = () => {
@@ -95,7 +95,7 @@ class Comment extends React.Component {
       </div>
     );
   }
-};
+}
 
 const mapStateToProps = (state) => {
   return {
