@@ -98,7 +98,7 @@ class CommentList extends React.Component {
             return <Comment key={i} comment={comment} />;
           }) }
           {comments.length === 0 && !fetching &&
-            <Paper className={[classes.header, classes.noResultBox].join(' ')} elevation={1}>
+            <Paper className={[classes.header, classes.noResultBox].join('')} elevation={1}>
               <Typography align='center' variant='display1' component='h1'>
               No results
               </Typography>
