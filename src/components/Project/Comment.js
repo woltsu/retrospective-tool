@@ -41,39 +41,60 @@ const styles = {
   }
 };
 
-export const Comment = (props) => {
-  const { content, creator, important, _id, time } = props.comment;
-  const classes = props.classes;
-  return (
-    <div className={classes.commentContainer}>
-      <Card className={classes.comment}>
-        <CardContent>
-          <Typography component="p">
-            { content } ~{ creator || 'anonymous' }
-          </Typography>
-          <Typography component="p" className={classes.dateContainer}>
-            <AccessTime style={{ fontSize: 15 }} />
-            <span className={classes.date}>
-              { moment(time).fromNow() }
-            </span>
-          </Typography>
-          <Checkbox
-            classes={{
-              checked: classes.checked
-            }}
-            className={classes.star}
-            icon={<StarBorder />}
-            checkedIcon={<Star />}
-            checked={important}
-            onClick={() => props.toggleComment(_id, !important, props.token)}
-            value="checkedH"
-          />
-        </CardContent>
-        <CardActions>
-        </CardActions>
-      </Card>
-    </div>
-  );
+class Comment extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      important: false
+    }
+  }
+
+  componentDidMount = () => {
+    this.setState({ important: this.props.comment.important });
+  }
+
+  componentWillReceiveProps = (newProps) => {
+    this.setState({ important: newProps.comment.important });
+  }
+
+  render() {
+    const { content, creator, important, _id, time } = this.props.comment;
+    const classes = this.props.classes;
+    return (
+      <div className={classes.commentContainer}>
+        <Card className={classes.comment}>
+          <CardContent>
+            <Typography component="p">
+              { content } ~{ creator || 'anonymous' }
+            </Typography>
+            <Typography component="p" className={classes.dateContainer}>
+              <AccessTime style={{ fontSize: 15 }} />
+              <span className={classes.date}>
+                { moment(time).fromNow() }
+              </span>
+            </Typography>
+            <Checkbox
+              classes={{
+                checked: classes.checked
+              }}
+              className={classes.star}
+              icon={<StarBorder />}
+              checkedIcon={<Star />}
+              checked={this.state.important}
+              onClick={() => {
+                this.setState({ important: !this.state.important });                
+                this.props.toggleComment(_id, !important, this.props.token);
+              }}
+              value="checkedH"
+            />
+          </CardContent>
+          <CardActions>
+          </CardActions>
+        </Card>
+      </div>
+    );
+  }
 };
 
 const mapStateToProps = (state) => {

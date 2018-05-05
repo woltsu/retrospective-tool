@@ -118,6 +118,7 @@ export const setComments = (project) => {
 export const createComment = (comment, token) => {
   return async (dispatch) => {
     const response = await commentService.create(comment, token);
+    projectService.emitAdd(response);
     dispatch({
       type: ADD_COMMENT,
       payload: response
@@ -125,9 +126,24 @@ export const createComment = (comment, token) => {
   };
 };
 
+export const addComment = (comment) => {
+  return {
+    type: ADD_COMMENT,
+    payload: comment
+  };
+}
+
+export const updateComment = (comment) => {
+  return {
+    type: UPDATE_COMMENT,
+    payload: comment
+  };
+}
+
 export const toggleComment = (_id, important, token) => {
   return async (dispatch) => {
     const response = await commentService.put(_id, { important }, token);
+    projectService.emitUpdate(response);
     dispatch({
       type: UPDATE_COMMENT,
       payload: response

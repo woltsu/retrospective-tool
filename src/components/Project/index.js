@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import Button from 'material-ui/Button';
 import CreateIcon from 'material-ui-icons/Create';
-import { setComments } from '../../reducers/projectReducer';
+import { setComments, addComment, updateComment } from '../../reducers/projectReducer';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
+import projectService from '../../services/projectService';
 
 const styles = {
   addButton: {
@@ -36,6 +37,11 @@ class Project extends React.Component {
       name: this.props.projectName,
       token: this.props.projectToken
     });
+    projectService.connect(this.props.projectName, this.props.addComment, this.props.updateComment);
+  }
+
+  componentWillUnmount = () => {
+    projectService.disconnect();
   }
 
   render() {
@@ -71,7 +77,7 @@ const mapStateToProps = (state) => {
 
 const ConnectedProject = connect(
   mapStateToProps,
-  { setComments }
+  { setComments, addComment, updateComment }
 )(Project);
 
 export default withStyles(styles)(ConnectedProject);
