@@ -7,6 +7,7 @@ const SET_COMMENTS = 'Set comments';
 const SET_FETCHING = 'Set fetching';
 const ADD_COMMENT = 'Add comment';
 const UPDATE_COMMENT = 'Update comment';
+const REMOVE_COMMENT = 'Remove comment';
 
 const initialState = {
   token: null,
@@ -61,6 +62,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       comments: state.comments.map((c) => c._id === comment._id ? comment : c)
+    };
+  }
+
+  case REMOVE_COMMENT: {
+    return {
+      ...state,
+      comments: state.comments.filter((c) => c._id !== action.payload)
     };
   }
 
@@ -148,6 +156,26 @@ export const toggleComment = (_id, important, token) => {
       type: UPDATE_COMMENT,
       payload: response
     });
+  };
+};
+
+export const removeComment = (_id, token) => {
+  return async (dispatch) => {
+    const response = await commentService.remove(_id, token);
+    if (!response.error) {
+      await projectService.emitRemove(_id);
+      dispatch({
+        type: REMOVE_COMMENT,
+        payload: _id
+      });
+    }
+  };
+};
+
+export const onlyRemoveComment = (_id) => {
+  return {
+    type: REMOVE_COMMENT,
+    payload: _id
   };
 };
 

@@ -41,10 +41,11 @@ export const login = async (credentials) => {
   }
 };
 
-export const connect = async (name, addComment, updateComment) => {
+export const connect = async (name, addComment, updateComment, removeComment) => {
   socket = await socketIOClient(baseUrl, { query: `name=${name}` });
   socket.on('add comment', (data) => addComment(data));
   socket.on('update comment', (data) => updateComment(data));
+  socket.on('remove comment', (data) => removeComment(data));
 };
 
 export const disconnect = () => {
@@ -59,4 +60,8 @@ export const emitUpdate = async (data) => {
   socket.emit('update', data);
 };
 
-export default { create, getProject, login, connect, disconnect, emitAdd, emitUpdate };
+export const emitRemove = async (data) => {
+  socket.emit('remove', data);
+};
+
+export default { create, getProject, login, connect, disconnect, emitAdd, emitUpdate, emitRemove };

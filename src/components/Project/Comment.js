@@ -5,10 +5,13 @@ import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import Star from 'material-ui-icons/Star';
 import StarBorder from 'material-ui-icons/StarBorder';
+import DeleteForever from 'material-ui-icons/DeleteForever';
 import AccessTime from 'material-ui-icons/AccessTime';
 import Checkbox from 'material-ui/Checkbox';
+import IconButton from 'material-ui/IconButton';
 import moment from 'moment';
-import { toggleComment } from '../../reducers/projectReducer';
+import { toggleComment, removeComment } from '../../reducers/projectReducer';
+
 
 const styles = {
   commentContainer: {
@@ -24,6 +27,18 @@ const styles = {
     position: 'absolute',
     top: 0,
     right: 0
+  },
+  delete: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    color: '#e51f1f'    
+  },
+  new: {
+    position: 'absolute',
+    bottom: '0',
+    right: '0',
+    fontSize: '13px'
   },
   checked: {
     color: 'gold'
@@ -60,6 +75,11 @@ class Comment extends React.Component {
 
   render() {
     const { content, creator, important, _id, time } = this.props.comment;
+    
+    const whenCreated = moment(moment().valueOf()).diff(moment(time));
+    const fourHours = moment.duration(4*60*60*1000).valueOf();
+    const isFresh = fourHours - whenCreated > 0;
+
     const classes = this.props.classes;
     return (
       <div className={classes.commentContainer}>
@@ -88,6 +108,19 @@ class Comment extends React.Component {
               }}
               value="checkedH"
             />
+            { isFresh &&
+              <div className={classes.new}>
+                <span>New comment!</span>
+                <IconButton disabled aria-label="Delete">
+                  <DeleteForever />
+                </IconButton>
+              </div>
+            }
+            { !isFresh && 
+              <IconButton className={[classes.delete].join(' ')} aria-label="Delete">
+                <DeleteForever onClick={() => this.props.removeComment(_id, this.props.token)} />
+              </IconButton>
+            }
           </CardContent>
           <CardActions>
           </CardActions>
@@ -105,7 +138,7 @@ const mapStateToProps = (state) => {
 
 const ConnectedComment = connect(
   mapStateToProps,
-  { toggleComment }
+  { toggleComment, removeComment }
 )(Comment);
 
 export default withStyles(styles)(ConnectedComment);

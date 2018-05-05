@@ -33,4 +33,20 @@ const put = async (_id, newValues, token) => {
   }
 };
 
-export default { create, put };
+const remove = async (_id, token) => {
+  try {
+    let error = null;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const response = await axios.delete(`${baseUrl}/${_id}`, config)
+      .catch((e) => { error = e.response.data; });
+    return error ? error : response.data;
+  } catch (e) {
+    return { error: 'Connection error' };
+  }
+};
+
+export default { create, put, remove };
