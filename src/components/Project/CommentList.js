@@ -10,14 +10,17 @@ import moment from 'moment';
 import Comment from './Comment';
 import travoltaGif from '../../assets/travolta.gif';
 
-const styles = {
+const styles = theme => ({
   commentList: {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
     maxWidth: '600px',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    margin: '30px auto 0 auto',
+    [theme.breakpoints.down(600)]: {
+      marginTop: 0
+    },
+    maxHeight: '200px'
   },
   header: {
     height: '80px',
@@ -42,12 +45,11 @@ const styles = {
     maxWidth: '100%',
     maxHeight: '100%'
   },
-};
+});
 
 class CommentList extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       starsOnly: false,
       oldestFirst: false
@@ -96,7 +98,7 @@ class CommentList extends React.Component {
             return <Comment key={i} comment={comment} />;
           }) }
           {comments.length === 0 && !fetching &&
-            <Paper className={[classes.header, classes.noResultBox]} elevation={1}>
+            <Paper className={[classes.header, classes.noResultBox].join(' ')} elevation={1}>
               <Typography align='center' variant='display1' component='h1'>
               No results
               </Typography>
