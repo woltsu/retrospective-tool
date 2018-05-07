@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { CircularProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
-import { FormControlLabel } from 'material-ui/Form';
+import { FormControlLabel, FormGroup } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
+import Checkbox from 'material-ui/Checkbox';
 import moment from 'moment';
 import Comment from './Comment';
 import travoltaGif from '../../assets/travolta.gif';
@@ -20,14 +21,13 @@ const styles = theme => ({
     [theme.breakpoints.down(600)]: {
       marginTop: 0
     },
-    maxHeight: '200px'
+    maxHeight: '200px',
   },
   header: {
-    height: '80px',
     width: '100%',
     maxWidth: '600px',
     zIndex: '2',
-    padding: '10px 0 60px 0',
+    padding: '10px 0 30px 0',
   },
   headerTitle: {
     fontSize: '20px',
@@ -45,6 +45,23 @@ const styles = theme => ({
     maxWidth: '100%',
     maxHeight: '100%'
   },
+  filterControlContainer: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    [theme.breakpoints.down(393)]: {
+      flexDirection: 'column',
+      alignItems: 'center'
+    },
+  },
+  filterCheckboxes: {
+    display: 'flex',
+    justifyContent: 'space-around'
+  },
+  filterCheckbox: {
+    [theme.breakpoints.down(393)]: {
+      width: '40%'
+    },
+  }
 });
 
 class CommentList extends React.Component {
@@ -52,7 +69,9 @@ class CommentList extends React.Component {
     super(props);
     this.state = {
       starsOnly: false,
-      oldestFirst: false
+      orderByType: false,
+      newOnly: false,
+      types: ['default', 'start', 'continue', 'stop']
     };
   }
 
@@ -63,12 +82,45 @@ class CommentList extends React.Component {
     }
 
     filteredComments = filteredComments.sort((a, b) => {
-      return this.state.oldestFirst ?
-        moment(b.time).isBefore(moment(a.time)) : 
-        moment(a.time).isBefore(moment(b.time));
+      return moment(a.time).isBefore(moment(b.time));
+    });
+
+    if (this.state.orderByType) {
+      filteredComments = filteredComments.sort((a, b) => {
+        const mapTypeToValue = {
+          default: 4,
+          stop: 1,
+          continue: 2,
+          start: 3
+        };
+
+        return mapTypeToValue[a.type] - mapTypeToValue[b.type];
+      });
+    }
+
+    if (this.state.newOnly) {
+      filteredComments = filteredComments.filter((c) => {
+        const whenCreated = moment(moment().valueOf()).diff(moment(c.time));
+        const fourHours = moment.duration(4*60*60*1000).valueOf();
+        return fourHours - whenCreated > 0;
+      });
+    }
+
+    filteredComments = filteredComments.filter((c) => {
+      return this.state.types.includes(c.type);
     });
 
     return filteredComments;
+  }
+
+  handleTypesChange = (type) => {
+    let types = this.state.types;
+    if (types.includes(type)) {
+      types = types.filter((t) => t !== type);
+    } else {
+      types = types.concat(type);
+    }
+    this.setState({ types });
   }
 
   render() {
@@ -80,17 +132,70 @@ class CommentList extends React.Component {
           <Paper className={classes.header} elevation={1}>
             <Typography align='center' component='div'>
               <div className={classes.headerTitle}>Filter</div>
-              <FormControlLabel control={
-                <Switch checked={this.state.starsOnly}
-                  value='starsOnly'
-                  onChange={() => this.setState({ starsOnly: !this.state.starsOnly })}/>
-              } label='Stars only' />
+              <div className={classes.filterControlContainer}>
+                <FormControlLabel control={
+                  <Switch checked={this.state.starsOnly}
+                    value='starsOnly'
+                    onChange={() => this.setState({ starsOnly: !this.state.starsOnly })}/>
+                } label='Stars only' />
 
-              <FormControlLabel control={
-                <Switch checked={this.state.oldestFirst}
-                  value='oldestFirst'
-                  onChange={() => this.setState({ oldestFirst: !this.state.oldestFirst })}/>
-              } label='Oldest first' />
+                <FormControlLabel control={
+                  <Switch checked={this.state.orderByType}
+                    value='orderByType'
+                    onChange={() => this.setState({ orderByType: !this.state.orderByType })}/>
+                } label='Order by type' />
+
+                <FormControlLabel control={
+                  <Switch checked={this.state.newOnly}
+                    value='newOnly'
+                    onChange={() => this.setState({ newOnly: !this.state.newOnly })}/>
+                } label='New only' />
+              </div>
+
+              <FormGroup className={classes.filterCheckboxes} onChange={(e) => this.handleTypesChange(e.target.value)} row>
+                <FormControlLabel
+                  className={classes.filterCheckbox}                
+                  control={
+                    <Checkbox
+                      checked={this.state.types.includes('default')}
+                      color='primary'
+                      value='default'
+                    />
+                  }
+                  label='Default'
+                />
+                <FormControlLabel
+                  className={classes.filterCheckbox}
+                  control={
+                    <Checkbox
+                      checked={this.state.types.includes('start')}
+                      color='primary'
+                      value='start'
+                    />
+                  }
+                  label='Start'
+                />
+                <FormControlLabel
+                  className={classes.filterCheckbox}                
+                  control={
+                    <Checkbox
+                      checked={this.state.types.includes('continue')}
+                      color='primary'
+                      value='continue'
+                    />
+                  }
+                  label='Continue' />
+                <FormControlLabel
+                  className={classes.filterCheckbox}                
+                  control={
+                    <Checkbox
+                      checked={this.state.types.includes('stop')}
+                      color='primary'
+                      value='stop'
+                    />
+                  }
+                  label='Stop' />
+              </FormGroup>
             </Typography>
           </Paper>
           { fetching && <CircularProgress className={classes.loader} /> }      

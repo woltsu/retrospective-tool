@@ -2,13 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
+import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import Star from 'material-ui-icons/Star';
 import StarBorder from 'material-ui-icons/StarBorder';
-import DeleteForever from 'material-ui-icons/DeleteForever';
 import AccessTime from 'material-ui-icons/AccessTime';
 import Checkbox from 'material-ui/Checkbox';
-import IconButton from 'material-ui/IconButton';
 import moment from 'moment';
 import { toggleComment, removeComment } from '../../reducers/projectReducer';
 
@@ -26,13 +25,14 @@ const styles = {
   star: {
     position: 'absolute',
     top: 0,
-    right: 0
+    right: '5px'
   },
   delete: {
     position: 'absolute',
     bottom: 0,
     right: 0,
-    color: '#e51f1f'    
+    fontWeight: 400,
+    fontSize: '13px'
   },
   new: {
     position: 'absolute',
@@ -41,7 +41,7 @@ const styles = {
     fontSize: '13px'
   },
   checked: {
-    color: 'gold'
+    color: '#2196f3'
   },
   dateContainer: {
     position: 'absolute',
@@ -73,25 +73,40 @@ class Comment extends React.Component {
     this.setState({ important: newProps.comment.important });
   }
 
+  getTypeAsColor = (type) => {
+    if (type === 'start') {
+      return '#b2ffb2';
+
+    } else if (type === 'continue') {
+      return '#ffffb2';
+
+    } else if (type === 'stop') {
+      return '#ffcccc';
+
+    }
+    return 'white';
+  }
+
   render() {
-    const { content, creator, important, _id, time } = this.props.comment;
-    
+    const { content, creator, important, _id, time, type } = this.props.comment;
     const whenCreated = moment(moment().valueOf()).diff(moment(time));
     const fourHours = moment.duration(4*60*60*1000).valueOf();
     const isFresh = fourHours - whenCreated > 0;
+    // const isFresh = false;
+    const backgroundColor = this.getTypeAsColor(type);
 
     const classes = this.props.classes;
     return (
       <div className={classes.commentContainer}>
-        <Card className={classes.comment}>
+        <Card className={classes.comment} style={{ backgroundColor }}>
           <CardContent>
             <Typography component="p">
-              { content } ~{ creator || 'anonymous' }
+              { content }
             </Typography>
             <Typography component="p" className={classes.dateContainer}>
               <AccessTime style={{ fontSize: 15 }} />
               <span className={classes.date}>
-                { moment(time).fromNow() }
+                { moment(time).fromNow() } by { creator || 'anonymous' }
               </span>
             </Typography>
             <Checkbox
@@ -110,16 +125,16 @@ class Comment extends React.Component {
             />
             { isFresh &&
               <div className={classes.new}>
-                <span>New comment!</span>
-                <IconButton disabled aria-label="Delete">
-                  <DeleteForever />
-                </IconButton>
+                <span>New!</span>
+                <Button disabled color='secondary'>
+                  Delete
+                </Button>
               </div>
             }
             { !isFresh && 
-              <IconButton className={[classes.delete].join(' ')} aria-label="Delete">
-                <DeleteForever onClick={() => this.props.removeComment(_id, this.props.token)} />
-              </IconButton>
+              <Button className={classes.delete} onClick={() => this.props.removeComment(_id, this.props.token)}>
+                Delete
+              </Button>
             }
           </CardContent>
           <CardActions>

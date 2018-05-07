@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
+import Input from 'material-ui/Input';
 import TextField from 'material-ui/TextField';
 import Dialog, {
   DialogActions,
@@ -9,15 +10,16 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import Checkbox from 'material-ui/Checkbox';
-import { FormControlLabel } from 'material-ui/Form';
+import { FormControlLabel, FormControl } from 'material-ui/Form';
+import Select from 'material-ui/Select';
 import { createComment } from '../../reducers/projectReducer';
 
 const styles = {
   formContainer: {
     maxWidth: '339px'
   },
-  checkboxContainer: {
-    marginTop: '8px'
+  formOptions: {
+    marginTop: '10px'
   }
 };
 
@@ -26,6 +28,7 @@ class CommentForm extends React.Component {
     super(props);
     this.state = {
       content: '',
+      type: 'default',
       anonymous: true
     };
   }
@@ -46,7 +49,7 @@ class CommentForm extends React.Component {
     if (content.trim().length === 0) {
       return;
     }
-    this.props.createComment({ content, creator }, this.props.token);
+    this.props.createComment({ content, creator, type: this.state.type }, this.props.token);
     this.handleClose();
   }
 
@@ -82,17 +85,33 @@ class CommentForm extends React.Component {
                 fullWidth
               />
               }
-              <FormControlLabel
-                className={classes.checkboxContainer}
-                control={
-                  <Checkbox
-                    checked={this.state.anonymous}
-                    onChange={() => this.setState({ anonymous: !this.state.anonymous })}
-                    color='primary'
-                  />
-                }
-                label='Anonymous'
-              />
+              <div className={classes.formOptions}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={this.state.anonymous}
+                      onChange={() => this.setState({ anonymous: !this.state.anonymous })}
+                      color='primary'
+                    />
+                  }
+                  label='Anonymous'
+                />
+
+                <FormControl>
+                  <Select
+                    autoWidth
+                    native
+                    value={this.state.type}
+                    onChange={(event) => this.setState({ type: event.target.value})}
+                    input={<Input id='type-selectr' />}
+                  >
+                    <option value={'default'}>Default</option>
+                    <option value={'start'}>Start</option>
+                    <option value={'continue'}>Continue</option>
+                    <option value={'stop'}>Stop</option>
+                  </Select>
+                </FormControl>
+              </div>
               <DialogActions>
                 <Button onClick={this.handleClose} color='primary'>
                   Cancel
