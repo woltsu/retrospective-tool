@@ -17,11 +17,11 @@ const styles = theme => ({
     flexDirection: 'column',
     width: '100%',
     maxWidth: '600px',
-    margin: '30px auto 0 auto',
+    margin: '65px auto 0 auto',
     [theme.breakpoints.down(600)]: {
-      marginTop: 0
+      marginTop: '60px'
     },
-    maxHeight: '200px',
+    maxHeight: '100%',
   },
   header: {
     width: '100%',
@@ -55,7 +55,10 @@ const styles = theme => ({
   },
   filterCheckboxes: {
     display: 'flex',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    [theme.breakpoints.down(393)]: {
+      paddingLeft: '50px' 
+    }
   },
   filterCheckbox: {
     [theme.breakpoints.down(393)]: {
@@ -82,7 +85,7 @@ class CommentList extends React.Component {
     }
 
     filteredComments = filteredComments.sort((a, b) => {
-      return moment(a.time).isBefore(moment(b.time));
+      return moment(b.time).valueOf() - moment(a.time).valueOf();
     });
 
     if (this.state.orderByType) {
@@ -94,7 +97,11 @@ class CommentList extends React.Component {
           start: 3
         };
 
-        return mapTypeToValue[a.type] - mapTypeToValue[b.type];
+        const typeDiff = mapTypeToValue[a.type] - mapTypeToValue[b.type];
+        if (typeDiff === 0) {
+          return moment(b.time).valueOf() - moment(a.time).valueOf();
+        }
+        return typeDiff;
       });
     }
 
@@ -125,7 +132,10 @@ class CommentList extends React.Component {
 
   render() {
     const { classes, fetching } = this.props;
-    const comments = this.filterComments(this.props.comments);
+    let comments = [];
+    if (!fetching) {
+      comments = this.filterComments(this.props.comments);
+    }
     return (
       <div>
         <div className={classes.commentList}>

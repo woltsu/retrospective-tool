@@ -24,7 +24,7 @@ const styles = {
 const Header = (props) => {
   const { classes } = props;
   return (
-    <AppBar position='sticky' color='primary'>
+    <AppBar position='fixed' color='primary'>
       <Toolbar>
         <IconButton onClick={() => props.toggleDrawer()} className={classes.menuButton} color="inherit" aria-label="Menu">
           <MenuIcon />
