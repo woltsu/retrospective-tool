@@ -19,7 +19,12 @@ const styles = {
     maxWidth: '339px'
   },
   formOptions: {
-    marginTop: '10px'
+    display: 'flex',
+    alignItems: 'stretch',
+    marginTop: '20px'
+  },
+  typeSelection: {
+    flex: 1
   }
 };
 
@@ -28,6 +33,7 @@ class CommentForm extends React.Component {
     super(props);
     this.state = {
       content: '',
+      name: '',
       type: 'default',
       anonymous: true
     };
@@ -36,7 +42,6 @@ class CommentForm extends React.Component {
   handleClose = () => {
     this.setState({
       content: '',
-      anonymous: true
     });
     this.props.toggle();
   };
@@ -80,6 +85,8 @@ class CommentForm extends React.Component {
               {!this.state.anonymous &&
               <TextField
                 name='name'
+                value={this.state.name}
+                onChange={(e) => this.setState({ name: e.target.value })}
                 margin='normal'
                 label='Name'
                 fullWidth
@@ -97,9 +104,9 @@ class CommentForm extends React.Component {
                   label='Anonymous'
                 />
 
-                <FormControl>
+                <FormControl className={classes.typeSelection}>
                   <Select
-                    autoWidth
+                    fullWidth
                     native
                     value={this.state.type}
                     onChange={(event) => this.setState({ type: event.target.value})}

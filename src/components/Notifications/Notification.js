@@ -6,13 +6,15 @@ import Paper from 'material-ui/Paper';
 const styles = {
   notification: {
     color: 'green',
-    border: '1px solid',
-    padding: '3px 10px',
-    width: '350px',
+    width: '380px',
     textAlign: 'center',
     marginTop: '15px',
-    borderRadius: '8px',
-    backgroundColor: 'white'
+    borderRadius: '5px',
+    backgroundColor: 'white',
+    fontSize: '20px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   error: {
     color: 'red'

@@ -32,7 +32,7 @@ const styles = {
     bottom: 0,
     right: 0,
     fontWeight: 400,
-    fontSize: '13px'
+    fontSize: '13px',
   },
   new: {
     position: 'absolute',
@@ -92,7 +92,6 @@ class Comment extends React.Component {
     const whenCreated = moment(moment().valueOf()).diff(moment(time));
     const fourHours = moment.duration(4*60*60*1000).valueOf();
     const isFresh = fourHours - whenCreated > 0;
-    // const isFresh = false;
     const backgroundColor = this.getTypeAsColor(type);
 
     const classes = this.props.classes;

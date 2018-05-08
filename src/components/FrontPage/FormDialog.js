@@ -26,6 +26,7 @@ class FormDialog extends React.Component {
       error: false,
       errorMessage: '',
       submitDisabled: true,
+      pending: false,
     };
   }
 
@@ -40,6 +41,7 @@ class FormDialog extends React.Component {
   }
 
   submit = async (e) => {
+    this.setState({ pending: true });
     e.preventDefault();
     const name = e.target.name.value;
     const password = e.target.password.value;
@@ -57,7 +59,8 @@ class FormDialog extends React.Component {
       return;
     }
 
-    this.props.createNotification(`Project ${name} was created successfully!`);        
+    this.props.createNotification(`Project ${name} was created successfully!`); 
+    this.setState({ pending: false });
     this.handleClose();
   }
 
@@ -93,11 +96,12 @@ class FormDialog extends React.Component {
               />
               { this.state.errorMessage && <p className={classes.errorMessage}>{ this.state.errorMessage }</p> }
               <DialogActions>
-                <Button onClick={this.handleClose} color='primary'>
+                <Button disabled={this.state.pending} onClick={this.handleClose} color='primary'>
                   Cancel
                 </Button>
-                <Button type='submit' color='primary' disabled={this.state.submitDisabled}>
-                  Create
+                <Button type='submit' color='primary' disabled={this.state.submitDisabled || this.state.pending}>
+                  {!this.state.pending && 'Create'}
+                  {this.state.pending && 'Creating...'}
                 </Button>
               </DialogActions>
             </form>
