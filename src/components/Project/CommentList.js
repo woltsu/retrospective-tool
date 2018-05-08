@@ -49,7 +49,6 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'space-around',
     [theme.breakpoints.down(393)]: {
-      flexDirection: 'column',
       alignItems: 'center'
     },
   },
@@ -141,25 +140,25 @@ class CommentList extends React.Component {
         <div className={classes.commentList}>
           <Paper className={classes.header} elevation={1}>
             <Typography align='center' component='div'>
-              <div className={classes.headerTitle}>Filter</div>
+              <div className={classes.headerTitle}>Filter by</div>
               <div className={classes.filterControlContainer}>
                 <FormControlLabel control={
                   <Switch checked={this.state.starsOnly}
                     value='starsOnly'
                     onChange={() => this.setState({ starsOnly: !this.state.starsOnly })}/>
-                } label='Stars only' />
+                } label='Stars' />
 
                 <FormControlLabel control={
                   <Switch checked={this.state.orderByType}
                     value='orderByType'
                     onChange={() => this.setState({ orderByType: !this.state.orderByType })}/>
-                } label='Order by type' />
+                } label='Type' />
 
                 <FormControlLabel control={
                   <Switch checked={this.state.newOnly}
                     value='newOnly'
                     onChange={() => this.setState({ newOnly: !this.state.newOnly })}/>
-                } label='New only' />
+                } label='New' />
               </div>
 
               <FormGroup className={classes.filterCheckboxes} onChange={(e) => this.handleTypesChange(e.target.value)} row>
