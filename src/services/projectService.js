@@ -1,7 +1,5 @@
 import axios from 'axios';
-import socketIOClient from "socket.io-client";
 const baseUrl = `${process.env.REACT_APP_BACKEND_URI}/api/projects`;
-let socket = null;
 
 export const create = async (newProject) => {
   try {
@@ -41,27 +39,4 @@ export const login = async (credentials) => {
   }
 };
 
-export const connect = async (name, addComment, updateComment, removeComment) => {
-  socket = await socketIOClient(baseUrl, { query: `name=${name}` });
-  socket.on('add comment', (data) => addComment(data));
-  socket.on('update comment', (data) => updateComment(data));
-  socket.on('remove comment', (data) => removeComment(data));
-};
-
-export const disconnect = () => {
-  socket.disconnect();
-};
-
-export const emitAdd = async (data) => {
-  socket.emit('add', data);
-};
-
-export const emitUpdate = async (data) => {
-  socket.emit('update', data);
-};
-
-export const emitRemove = async (data) => {
-  socket.emit('remove', data);
-};
-
-export default { create, getProject, login, connect, disconnect, emitAdd, emitUpdate, emitRemove };
+export default { create, getProject, login };

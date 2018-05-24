@@ -20,7 +20,7 @@ class FrontPage extends React.Component {
     const { classes, project } = this.props;
     return (
       <div>
-        { project.name && <Redirect to={`/project/${project.name}`}/> }
+        { !project.usernamePending && project.name && <Redirect to={`/project/${project.name}`}/> }
         <FormDialog />
         <div className={ classes.loginForm } >
           <div className={ classes.empty }></div>
