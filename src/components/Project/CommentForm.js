@@ -33,7 +33,6 @@ class CommentForm extends React.Component {
     super(props);
     this.state = {
       content: '',
-      name: '',
       type: 'default',
       anonymous: true
     };
@@ -50,7 +49,7 @@ class CommentForm extends React.Component {
   submit = async (e) => {
     e.preventDefault();
     const content = e.target.comment.value;
-    const creator = e.target.name.value;
+    const creator = this.state.anonymous ? null : this.props.username;
     if (content.trim().length === 0) {
       return;
     }
@@ -82,7 +81,7 @@ class CommentForm extends React.Component {
                 fullWidth
                 onChange={(e) => this.setState({ content: e.target.value })}
               />
-              {!this.state.anonymous &&
+              {/*               {!this.state.anonymous &&
               <TextField
                 name='name'
                 value={this.state.name}
@@ -91,7 +90,7 @@ class CommentForm extends React.Component {
                 label='Name'
                 fullWidth
               />
-              }
+              } */}
               <div className={classes.formOptions}>
                 <FormControlLabel
                   control={
@@ -137,7 +136,8 @@ class CommentForm extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    token: state.project.token
+    token: state.project.token,
+    username: state.project.socket_username
   };
 };
 

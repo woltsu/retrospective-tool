@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
+import UsernameDialog from './UsernameDialog';
 import { projectLogin } from '../../reducers/projectReducer';
 
 const styles = {
@@ -46,9 +47,10 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { classes, errorMessage } = this.props;
+    const { classes, errorMessage, usernamePending } = this.props;
     return (
       <div className={classes.formStyle}>
+        <UsernameDialog open={usernamePending} />
         <Card className={classes.cardContainer}>
           <CardHeader title='Login to project' className={classes.cardHeader}/>
           <CardContent>
@@ -88,7 +90,8 @@ class LoginForm extends React.Component {
 const mapStateToProps = (state) => {
   return {
     errorMessage: state.project.errorMessage,
-    loginPending: state.project.loginPending
+    loginPending: state.project.loginPending,
+    usernamePending: state.project.usernamePending
   };
 };
 

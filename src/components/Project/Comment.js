@@ -122,15 +122,15 @@ class Comment extends React.Component {
               }}
               value="checkedH"
             />
-            { isFresh &&
+            { (isFresh || this.state.important) &&
               <div className={classes.new}>
-                <span>New!</span>
+                <span>{isFresh && 'New!'}</span>
                 <Button disabled color='secondary'>
                   Delete
                 </Button>
               </div>
             }
-            { !isFresh && 
+            { !isFresh && !this.state.important &&
               <Button className={classes.delete} onClick={() => this.props.removeComment(_id, this.props.token)}>
                 Delete
               </Button>

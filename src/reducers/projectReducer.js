@@ -1,17 +1,24 @@
 import projectService from '../services/projectService';
 import commentService from '../services/commentService';
+import socketService from '../services/socketService';
 const PROJECT_LOGIN = 'Project login';
 const PROJECT_LOGIN_SUCCESSFUL = 'Project login successful';
 const PROJECT_LOGIN_FAILURE = 'Project login failure';
+const SET_SOCKET_USERNAME = 'Project set socket username';
+const ADD_NEW_SOCKET_USER = 'Project add new socket user';
+const REMOVE_SOCKET_USER = 'Project remove socket user';
 const PROJECT_LOGOUT = 'Project logout';
-const SET_COMMENTS = 'Set comments';
-const SET_FETCHING = 'Set fetching';
-const ADD_COMMENT = 'Add comment';
-const UPDATE_COMMENT = 'Update comment';
-const REMOVE_COMMENT = 'Remove comment';
+const SET_COMMENTS = 'Project set comments';
+const SET_FETCHING = 'Project set fetching';
+const ADD_COMMENT = 'Project add comment';
+const UPDATE_COMMENT = 'Project update comment';
+const REMOVE_COMMENT = 'Project remove comment';
 
 const initialState = {
-  loginPending: false,  
+  loginPending: false,
+  usernamePending: false,
+  socket_username: null,
+  socketUsers: [],
   token: null,
   name: null,
   errorMessage: null,
@@ -35,7 +42,30 @@ const reducer = (state = initialState, action) => {
       token,
       name,
       errorMessage: '',
-      loginPending: false      
+      loginPending: false,
+      usernamePending: true   
+    };
+  }
+
+  case SET_SOCKET_USERNAME: {
+    return {
+      ...state,
+      usernamePending: false,
+      socket_username: action.payload
+    };
+  }
+
+  case ADD_NEW_SOCKET_USER: {
+    return {
+      ...state,
+      socketUsers: state.socketUsers.concat(action.payload)
+    };
+  }
+
+  case REMOVE_SOCKET_USER: {
+    return {
+      ...state,
+      socketUsers: state.socketUsers.filter((user) => user.id !== action.payload)
     };
   }
   
@@ -114,6 +144,34 @@ export const projectLogin = (credentials) => {
   };
 };
 
+export const setProjectSocketUsername = (username) => {
+  return {
+    type: SET_SOCKET_USERNAME,
+    payload: username
+  };
+};
+
+export const addNewSocketUser = (user) => {
+  return async (dispatch) => {
+    dispatch({
+      type: REMOVE_SOCKET_USER,
+      payload: user.id
+    });
+    
+    dispatch({
+      type: ADD_NEW_SOCKET_USER,
+      payload: user
+    });
+  };
+};
+
+export const removeSocketUser = (user) => {
+  return {
+    type: REMOVE_SOCKET_USER,
+    payload: user
+  };
+};
+
 export const projectLogout = () => {
   return { type: PROJECT_LOGOUT };
 };
@@ -140,7 +198,7 @@ export const setComments = (project) => {
 export const createComment = (comment, token) => {
   return async (dispatch) => {
     const response = await commentService.create(comment, token);
-    projectService.emitAdd(response);
+    socketService.emitAdd(response);
     dispatch({
       type: ADD_COMMENT,
       payload: response
@@ -165,7 +223,7 @@ export const updateComment = (comment) => {
 export const toggleComment = (_id, important, token) => {
   return async (dispatch) => {
     const response = await commentService.put(_id, { important }, token);
-    projectService.emitUpdate(response);
+    socketService.emitUpdate(response);
     dispatch({
       type: UPDATE_COMMENT,
       payload: response
@@ -177,7 +235,7 @@ export const removeComment = (_id, token) => {
   return async (dispatch) => {
     const response = await commentService.remove(_id, token);
     if (!response.error) {
-      await projectService.emitRemove(_id);
+      await socketService.emitRemove(_id);
       dispatch({
         type: REMOVE_COMMENT,
         payload: _id
