@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import CheckIcon from 'material-ui-icons/Check';
 
-const Player = ({ classes, player, vote, user, ready }) => {
+const Player = ({ classes, player, vote, user, ready, isShowingVotes }) => {
   return (
     <div className={classes.playerContainer}>
       <p className={user ? classes.user : ''}>{player.username}</p>
@@ -11,16 +11,16 @@ const Player = ({ classes, player, vote, user, ready }) => {
         <CheckIcon className={classes.checked} />
       }
       {
-        (vote === 0)  &&
+        ((vote === 0 || vote === undefined || vote === null) && isShowingVotes) &&
         <div>???</div>
       }
       {
-        ((vote !== undefined && vote !== null && (vote !== 0))) &&
+        (vote !== undefined && vote !== null && isShowingVotes) &&
         <div>{ vote }</div>
       }
       {
-        ((vote === undefined || vote === null) && vote !== 0) &&
-      <div className={classes.hidden}>?</div>
+        (!isShowingVotes) &&
+          <div className={classes.hidden}>?</div>
       }
     </div>
   );

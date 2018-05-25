@@ -6,15 +6,15 @@ import Player from './Player';
 
 class PokerBody extends React.Component {
   render() {
-    const { classes, user, players, playersVote, otherVotes, playersReady } = this.props;
+    const { classes, user, players, playersVote, otherVotes, playersReady, isShowingVotes } = this.props;
     return (
       <Card className={classes.pokerBodyContainer}>
         <CardContent className={classes.cardContent}>
-          <Player user player={user} vote={playersVote} />
+          <Player isShowingVotes={isShowingVotes} user player={user} vote={playersVote} />
           <Divider light />
           { players && players.map((p, i) =>
             <div key={i}>
-              <Player player={p} vote={otherVotes[p.id]} ready={playersReady[p.id]} />
+              <Player isShowingVotes={isShowingVotes} player={p} vote={otherVotes[p.id]} ready={playersReady[p.id]} />
               <Divider light/>
             </div>
           ) }
