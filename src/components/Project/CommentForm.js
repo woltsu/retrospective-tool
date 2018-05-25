@@ -20,7 +20,7 @@ const styles = {
   },
   formOptions: {
     display: 'flex',
-    alignItems: 'stretch',
+    alignItems: 'center',
     marginTop: '20px'
   },
   typeSelection: {

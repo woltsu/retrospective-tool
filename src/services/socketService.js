@@ -3,29 +3,16 @@ const baseUrl = `${process.env.REACT_APP_BACKEND_URI}/api/projects`;
 let socket = null;
 let id = null;
 
-export const connect = async (
-  name,
-  username,
-  addComment,
-  updateComment,
-  removeComment,
-  addNewSocketUser,
-  removeSocketUser
-) => {
+let listenersToAdd = [];
+let emits = [];
+export const connect = async (name, username) => {
   socket = await socketIOClient(baseUrl, { query: {
     name,
     username
   }});
-  socket.on('add comment', (data) => addComment(data));
-  socket.on('update comment', (data) => updateComment(data));
-  socket.on('remove comment', (data) => removeComment(data));
-  socket.on('set id', (data) => id = data);
-  socket.on('joined', (data) => {
-    addNewSocketUser(data);
-    socket.emit('introduce', { id, username });
-  });
-  socket.on('introduce', (data) => addNewSocketUser(data));
-  socket.on('disconnected', (data) => removeSocketUser(data));
+  listenersToAdd.forEach(({ event, func }) => socket.on(event, func));
+  emits.forEach(({ event, data }) => socket.emit(event, data));
+  socket.on('set id', (newId) => id = newId);
 };
 
 export const disconnect = () => {
@@ -48,6 +35,14 @@ export const emitShowVotes = async (data) => {
   socket.emit('show votes', data);
 };
 
+export const addListener = (event, func) => {
+  socket ? socket.on(event, func) : listenersToAdd.push({ event, func });
+};
+
+export const emit = (event, data) => {
+  socket ? socket.emit(event, data) : emits.push({ event, data });
+};
+
 const getSocket = () => {
   return socket;
 };
@@ -63,6 +58,8 @@ export default {
   emitUpdate,
   emitRemove,
   emitShowVotes,
+  addListener,
+  emit,
   getSocket,
   getId
 };

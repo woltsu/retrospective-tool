@@ -17,51 +17,63 @@ import {
 
 class PointingPoker extends React.Component {
   componentDidMount = () => {
-    setTimeout(() => {
-      socketService.getSocket().on('show votes', () => {
-        this.props.setShowing(true);
-        if ((!this.props.playersVote && this.props.playersVote !== 0)) {
-          this.props.setPlayersVote(0);
-          this.props.clearPlayersReady();
-        }
-        socketService.getSocket().emit('my vote', { id: socketService.getId(), vote: this.props.playersVote });
-      });
-      socketService.getSocket().on('my vote', (data) => {
-        this.updateVotes(data);
-      });
-      socketService.getSocket().on('clear votes', () => {
-        this.props.setShowing(false);
-        this.props.setPlayersVote(null);
-        this.props.clearOtherVotes();
+    socketService.addListener('clear votes', () => this.resetState());
+    socketService.addListener('my vote', (data) => this.updateVotes(data));
+    socketService.addListener('voted', (data) => this.props.updatePlayersReady(data));
+    socketService.addListener('set poker title', (newTitle) => this.props.updatePokerTitle(newTitle));
+    socketService.addListener('show votes', () => {
+      this.props.setShowing(true);
+      if ((!this.props.playersVote && this.props.playersVote !== 0)) {
+        this.props.setPlayersVote(0);
         this.props.clearPlayersReady();
+      }
+      socketService.emit('my vote', { id: socketService.getId(), vote: this.props.playersVote });
+    });
+    socketService.addListener('joined', (data) => {
+      const { isShowingVotes, otherVotes, playersReady, pokerTitle } = this.props;
+      const currentState = { isShowingVotes, otherVotes, playersReady, pokerTitle };
+      socketService.emit('init game', { id: data.id, currentState });
+    });
+    socketService.addListener('current game state', (currentState) => {
+      Object.keys(currentState.otherVotes).forEach((key) => {
+        this.props.updateOtherVotes({ id: key, vote: currentState.otherVotes[key] });
       });
-      socketService.getSocket().on('voted', (data) => {
-        this.props.updatePlayersReady(data);
+      Object.keys(currentState.playersReady).forEach((key) => {
+        this.props.updatePlayersReady(key);
       });
-      socketService.getSocket().on('set poker title', (newTitle) => {
-        this.props.updatePokerTitle(newTitle);
-      });
-      socketService.getSocket().on('joined', (data) => {
-        const { isShowingVotes, otherVotes, playersReady, pokerTitle } = this.props;
-        const currentState = { isShowingVotes, otherVotes, playersReady, pokerTitle };
-        socketService.getSocket().emit('init game', { id: data.id, currentState });
-      });
-      socketService.getSocket().on('current game state', (currentState) => {
-        Object.keys(currentState.otherVotes).forEach((key) => {
-          this.props.updateOtherVotes({ id: key, vote: currentState.otherVotes[key] });
-        });
-        Object.keys(currentState.playersReady).forEach((key) => {
-          this.props.updatePlayersReady(key);
-        });
-        this.props.setShowing(currentState.isShowingVotes);
-        this.props.updatePokerTitle(currentState.pokerTitle);
-      });
-    }, 1000);
+      this.props.setShowing(currentState.isShowingVotes);
+      this.props.updatePokerTitle(currentState.pokerTitle);
+    });
+  }
+
+  calculateAverage = () => {
+    const { playersVote, otherVotes } = this.props;
+    let sum = playersVote ? parseFloat(playersVote) : 0;
+    let n = 0;
+    if (sum > 0) {
+      n++;
+    }
+    Object.keys(otherVotes).forEach((key) => {
+      const vote = parseFloat(otherVotes[key]);
+      if (vote) {
+        n++;
+        sum += vote;
+      }
+    });
+    const roundedAvg = (Math.round((sum / n) * 2) / 2).toFixed(1);
+    return isNaN(roundedAvg) ? '???' : roundedAvg;
+  }
+
+  resetState = () => {
+    this.props.setShowing(false);
+    this.props.setPlayersVote(null);
+    this.props.clearOtherVotes();
+    this.props.clearPlayersReady();
   }
 
   vote = (value) => {
     this.props.setPlayersVote(value);
-    socketService.getSocket().emit('voted', socketService.getId());
+    socketService.emit('voted', socketService.getId());
   }
 
   showVotes = () => {
@@ -74,15 +86,12 @@ class PointingPoker extends React.Component {
   }
 
   clearVotes = () => {
-    socketService.getSocket().emit('clear votes');
-    this.props.setShowing(false);
-    this.props.setPlayersVote(null);
-    this.props.clearOtherVotes();
-    this.props.clearPlayersReady();
+    socketService.emit('clear votes');
+    this.resetState();
   }
 
   updatePokerTitle = (newTitle) => {
-    socketService.getSocket().emit('set poker title', newTitle);
+    socketService.emit('set poker title', newTitle);
     this.props.updatePokerTitle(newTitle);
   }
 
@@ -96,9 +105,10 @@ class PointingPoker extends React.Component {
           clearVotes={this.clearVotes}
           pokerTitle={this.props.pokerTitle}
           updatePokerTitle={this.updatePokerTitle}
+          calculateAverage={this.calculateAverage}
         />
         <PokerBody 
-          user={{ username, id: socketService.getId }}
+          user={{ username, id: socketService.getId() }}
           players={players}
           playersVote={this.props.playersVote}
           otherVotes={this.props.otherVotes}

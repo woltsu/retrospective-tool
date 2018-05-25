@@ -11,12 +11,16 @@ const Player = ({ classes, player, vote, user, ready }) => {
         <CheckIcon className={classes.checked} />
       }
       {
-        (vote || vote === 0) &&
+        (vote === 0)  &&
+        <div>???</div>
+      }
+      {
+        ((vote !== undefined && vote !== null && (vote !== 0))) &&
         <div>{ vote }</div>
       }
       {
-        (!vote && vote !== 0) &&
-      <div className={classes.result}></div>
+        ((vote === undefined || vote === null) && vote !== 0) &&
+      <div className={classes.hidden}>?</div>
       }
     </div>
   );
@@ -28,10 +32,15 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between'
   },
-  result: {
+  hidden: {
     width: '40px',
     height: '20px',
     backgroundColor: 'black',
+    color: 'white',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontWeight: 'bold'
   },
   user: {
     fontWeight: 'bold'

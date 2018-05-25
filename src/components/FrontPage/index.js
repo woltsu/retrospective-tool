@@ -17,10 +17,10 @@ const styles = {
 
 class FrontPage extends React.Component {
   render() {
-    const { classes, project } = this.props;
+    const { classes, project, username } = this.props;
     return (
       <div>
-        { !project.usernamePending && project.name && <Redirect to={`/project/${project.name}`}/> }
+        { !project.usernamePending && (project.name && username) && <Redirect to={`/project/${project.name}`}/> }
         <FormDialog />
         <div className={ classes.loginForm } >
           <div className={ classes.empty }></div>
@@ -33,7 +33,8 @@ class FrontPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    project: state.project
+    project: state.project,
+    username: state.project.socket_username,
   };
 };
 
