@@ -19,17 +19,21 @@ class PokerHeader extends React.Component {
         <CardContent className={classes.cardContent}>
           <Input
             fullWidth
+            placeholder='TITLE'
             value={pokerTitle || ''}
             onChange={(e) => updatePokerTitle(e.target.value)}
           />
           <div className={classes.headerControls}>
             {
               !isShowingVotes &&
-                <Button onClick={() => showVotes()}>SHOW</Button>
+                <Button className={classes.actionButton} onClick={() => showVotes()}>SHOW VOTES</Button>
             }
             {
               isShowingVotes &&
-                <Button onClick={() => clearVotes()}>CLEAR</Button>
+                <div className={classes.includeResult}>
+                  <span className={classes.result}>RESULT: {this.props.calculateAverage()}</span>
+                  <Button className={classes.actionButton} onClick={() => clearVotes()}>CLEAR VOTES</Button>
+                </div>
             }
           </div>
         </CardContent>
@@ -47,11 +51,28 @@ const styles = {
     minHeight: '157px'
   },
   cardContent: {
-    flex: 1
+    flex: 1,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   headerControls: {
+    marginTop: '10px',
+    width: '100%'
+  },
+  result: {
+    fontSize: '18px',
+    marginBottom: 0
+  },
+  includeResult: {
     display: 'flex',
-    justifyContent: 'space-around'
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  actionButton: {
+    float: 'right'
   }
 };
 

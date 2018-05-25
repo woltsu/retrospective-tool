@@ -12,6 +12,7 @@ import {
   onlyRemoveComment,
   addNewSocketUser,
   removeSocketUser,
+  projectLogout,
 } from '../../reducers/projectReducer';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
@@ -82,24 +83,33 @@ class Project extends React.Component {
       name: this.props.projectName,
       token: this.props.projectToken
     });
+    const { username, addComment, updateComment, onlyRemoveComment, addNewSocketUser, removeSocketUser} = this.props;
     socketService.connect(
       this.props.projectName,
-      this.props.socket_username,
-      this.props.addComment, 
-      this.props.updateComment,
-      this.props.onlyRemoveComment,
-      this.props.addNewSocketUser,
-      this.props.removeSocketUser,
+      this.props.username,
     );
+    socketService.addListener('add comment', (newComment) => addComment(newComment));
+    socketService.addListener('update comment', (updatedComment) => updateComment(updatedComment));
+    socketService.addListener('remove comment', (removedComment) => onlyRemoveComment(removedComment));
+    socketService.addListener('introduce', (newPlayer) => {
+      addNewSocketUser(newPlayer);
+    });
+    socketService.addListener('disconnected', (player) => removeSocketUser(player));
+    socketService.addListener('joined', (newPlayer) => {
+      addNewSocketUser(newPlayer);
+      socketService.emit('introduce', { id: socketService.getId(), username });
+    });
   }
 
   componentWillUnmount = () => {
-    socketService.disconnect();
+    if (socketService.getSocket()) {
+      socketService.disconnect();
+    }
   }
 
   render() {
-    const { classes, projectToken, comments } = this.props;
-    if (!projectToken) {
+    const { classes, projectToken, comments, username } = this.props;
+    if (!projectToken || !username) {
       return <Redirect to='/' />;
     }
     return (
@@ -155,14 +165,21 @@ const mapStateToProps = (state) => {
     projectName: state.project.name,
     projectToken: state.project.token,
     comments: state.project.comments,
-    socket_username: state.project.socket_username,
+    username: state.project.socket_username,
     socketUsers: state.project.socketUsers
   };
 };
 
 const ConnectedProject = connect(
   mapStateToProps,
-  { setComments, addComment, updateComment, onlyRemoveComment, addNewSocketUser, removeSocketUser }
+  { setComments,
+    addComment,
+    updateComment,
+    onlyRemoveComment,
+    addNewSocketUser,
+    removeSocketUser,
+    projectLogout
+  }
 )(Project);
 
 export default withStyles(styles)(ConnectedProject);

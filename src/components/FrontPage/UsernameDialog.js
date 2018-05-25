@@ -23,6 +23,7 @@ class UsernameDialog extends React.Component {
         <DialogTitle id='form-dialog-title'>Username</DialogTitle>
         <DialogContent>
           <TextField
+            autoComplete='off'
             name='username'
             label='Username'
             type='text'
@@ -32,7 +33,11 @@ class UsernameDialog extends React.Component {
             onChange = {(e) => this.setState({ username: e.target.value })}
           />
           <DialogActions>
-            <Button variant='raised' onClick={() => this.handleClose()} color='primary'>
+            <Button
+              disabled={this.state.username.length === 0 || this.state.username.length >= 20}
+              variant='raised' onClick={() => this.handleClose()}
+              color='primary'
+            >
                     OK
             </Button>
           </DialogActions>
