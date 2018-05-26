@@ -7,7 +7,7 @@ const Player = ({ classes, player, vote, user, ready, isShowingVotes }) => {
     <div className={classes.playerContainer}>
       <p className={user ? classes.user : ''}>{player.username}</p>
       {
-        ready && !vote &&
+        ready &&
         <CheckIcon className={classes.checked} />
       }
       {
@@ -15,11 +15,11 @@ const Player = ({ classes, player, vote, user, ready, isShowingVotes }) => {
         <div>???</div>
       }
       {
-        (vote !== undefined && vote !== null && isShowingVotes) &&
+        (vote !== undefined && vote !== null) &&
         <div>{ vote }</div>
       }
       {
-        (!isShowingVotes) &&
+        (!isShowingVotes && (vote === undefined || vote === null)) &&
           <div className={classes.hidden}>?</div>
       }
     </div>
