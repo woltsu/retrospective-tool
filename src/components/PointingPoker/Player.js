@@ -1,14 +1,14 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import CheckIcon from 'material-ui-icons/Check';
 import Avatar from 'material-ui/Avatar';
 import { setAvatarId } from '../../reducers/pokerReducer';
-import { setOtherPlayerAvatarId } from '../../reducers/projectReducer';
+import { setOtherPlayerAvatarId } from '../../reducers/projectReducer';
 
 function importAll(r) {
   let images = {};
-  r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+  r.keys().map((item) => { images[item.replace('./', '')] = r(item); });
   return images;
 }
 
@@ -16,7 +16,7 @@ const images = importAll(require.context('../../assets/avatars', false, /\.(svg)
 
 const getRandomImageId = () => {
   return Math.round(Math.random() * Object.keys(images).length + 1);
-}
+};
 
 const Player = ({ classes, player, vote, user, ready, isShowingVotes, avatarId, setAvatarId, setOtherPlayerAvatarId }) => {
   if (!avatarId) {
@@ -88,8 +88,8 @@ const styles = {
 const mapStateToProps = (state) => {
   return {
     avatarId: state.poker.avatarId
-  }
-}
+  };
+};
 
 const ConnectedPlayer = connect(
   mapStateToProps,

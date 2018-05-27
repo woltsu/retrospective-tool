@@ -122,13 +122,13 @@ const reducer = (state = initialState, action) => {
     let updatedPlayers = state.socketUsers;
     updatedPlayers.forEach((player, i) => {
       if (player.id === action.payload.playerId) {
-        updatedPlayers[i] = { ...player, avatarId: action.payload.avatarId }
+        updatedPlayers[i] = { ...player, avatarId: action.payload.avatarId };
       }
     });
     return {
       ...state,
       socketUsers: updatedPlayers
-    }
+    };
   }
 
   default: {
@@ -269,7 +269,7 @@ export const setOtherPlayerAvatarId = (avatarId, playerId) => {
   return {
     type: SET_OTHER_PLAYER_AVATAR_ID,
     payload: { avatarId, playerId }
-  }
-}
+  };
+};
 
 export default reducer;

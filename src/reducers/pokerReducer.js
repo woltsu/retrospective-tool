@@ -70,7 +70,7 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       avatarId: action.payload
-    }
+    };
     
   default: return state;
   }
@@ -127,7 +127,7 @@ export const setAvatarId = (id) => {
   return {
     type: SET_AVATAR_ID,
     payload: id
-  }
-}
+  };
+};
 
 export default reducer;
