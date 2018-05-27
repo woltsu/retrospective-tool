@@ -1,11 +1,37 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import CheckIcon from 'material-ui-icons/Check';
+import Avatar from 'material-ui/Avatar';
+import { setAvatarId } from '../../reducers/pokerReducer';
+import { setOtherPlayerAvatarId } from '../../reducers/projectReducer';
 
-const Player = ({ classes, player, vote, user, ready, isShowingVotes }) => {
+function importAll(r) {
+  let images = {};
+  r.keys().map((item) => { images[item.replace('./', '')] = r(item); });
+  return images;
+}
+
+const images = importAll(require.context('../../assets/avatars', false, /\.(svg)$/));
+
+const getRandomImageId = () => {
+  return Math.round(Math.random() * Object.keys(images).length + 1);
+};
+
+const Player = ({ classes, player, vote, user, ready, isShowingVotes, avatarId, setAvatarId, setOtherPlayerAvatarId }) => {
+  if (!avatarId) {
+    const newId = getRandomImageId();
+    setAvatarId(newId);
+  }
+  if (!user && !player.avatarId) {
+    setOtherPlayerAvatarId(getRandomImageId(), player.id);
+  }
   return (
     <div className={classes.playerContainer}>
-      <p className={user ? classes.user : ''}>{player.username}</p>
+      <div className={classes.userInfo}>
+        <Avatar src={images[`${user ? avatarId : player.avatarId}.svg`]} />
+        <p className={[user ? classes.user : '', classes.username].join(' ')}>{player.username}</p>
+      </div>
       {
         ready &&
         <CheckIcon className={classes.checked} />
@@ -30,7 +56,8 @@ const styles = {
   playerContainer: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    padding: '8px',
   },
   hidden: {
     width: '40px',
@@ -47,7 +74,26 @@ const styles = {
   },
   checked: {
     color: 'green'
+  },
+  userInfo: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  username: {
+    fontSize: '18px',
+    marginLeft: '15px'
   }
 };
 
-export default withStyles(styles)(Player);
+const mapStateToProps = (state) => {
+  return {
+    avatarId: state.poker.avatarId
+  };
+};
+
+const ConnectedPlayer = connect(
+  mapStateToProps,
+  { setAvatarId, setOtherPlayerAvatarId }
+)(Player);
+
+export default withStyles(styles)(ConnectedPlayer);

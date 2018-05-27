@@ -5,6 +5,7 @@ const CLEAR_OTHER_VOTES = 'Poker update other votes';
 const UPDATE_PLAYERS_READY = 'Poker update players ready';
 const CLEAR_PLAYERS_READY = 'Poker clear players ready';
 const UPDATE_POKER_TITLE = 'Poker update poker title';
+const SET_AVATAR_ID = 'Poker set avatar id';
 
 const initialState = {
   playersVote: null,
@@ -12,6 +13,7 @@ const initialState = {
   otherVotes: {},
   playersReady: {},
   pokerTitle: '',
+  avatarId: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -63,6 +65,12 @@ const reducer = (state = initialState, action) => {
       ...state,
       pokerTitle: action.payload
     };
+
+  case SET_AVATAR_ID:
+    return {
+      ...state,
+      avatarId: action.payload
+    };
     
   default: return state;
   }
@@ -112,6 +120,13 @@ export const updatePokerTitle = (value) => {
   return {
     type: UPDATE_POKER_TITLE,
     payload: value
+  };
+};
+
+export const setAvatarId = (id) => {
+  return {
+    type: SET_AVATAR_ID,
+    payload: id
   };
 };
 

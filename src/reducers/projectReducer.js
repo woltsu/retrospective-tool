@@ -13,6 +13,7 @@ const SET_FETCHING = 'Project set fetching';
 const ADD_COMMENT = 'Project add comment';
 const UPDATE_COMMENT = 'Project update comment';
 const REMOVE_COMMENT = 'Project remove comment';
+const SET_OTHER_PLAYER_AVATAR_ID = 'Project set other player avatar id';
 
 const initialState = {
   loginPending: false,
@@ -115,6 +116,19 @@ const reducer = (state = initialState, action) => {
 
   case PROJECT_LOGOUT: {
     return initialState;
+  }
+
+  case SET_OTHER_PLAYER_AVATAR_ID: {
+    let updatedPlayers = state.socketUsers;
+    updatedPlayers.forEach((player, i) => {
+      if (player.id === action.payload.playerId) {
+        updatedPlayers[i] = { ...player, avatarId: action.payload.avatarId };
+      }
+    });
+    return {
+      ...state,
+      socketUsers: updatedPlayers
+    };
   }
 
   default: {
@@ -248,6 +262,13 @@ export const onlyRemoveComment = (_id) => {
   return {
     type: REMOVE_COMMENT,
     payload: _id
+  };
+};
+
+export const setOtherPlayerAvatarId = (avatarId, playerId) => {
+  return {
+    type: SET_OTHER_PLAYER_AVATAR_ID,
+    payload: { avatarId, playerId }
   };
 };
 
