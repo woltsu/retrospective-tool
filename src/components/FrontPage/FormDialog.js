@@ -75,7 +75,7 @@ class FormDialog extends React.Component {
           disableBackdropClick
           disableEscapeKeyDown
         >
-          <DialogTitle id='form-dialog-title'>New project</DialogTitle>
+          <DialogTitle id='form-dialog-title'>New room</DialogTitle>
           <DialogContent>
             <form noValidate autoComplete='off' onSubmit={(e) => this.submit(e)}>
               <TextField

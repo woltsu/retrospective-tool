@@ -29,7 +29,7 @@ const Player = ({ classes, player, vote, user, ready, isShowingVotes, avatarId, 
   return (
     <div className={classes.playerContainer}>
       <div className={classes.userInfo}>
-        <Avatar src={images[`${user ? avatarId : player.avatarId}.svg`]} />
+      <Avatar src={images[`${ user ? avatarId : player.avatarId }.svg`]} alt='avatar' />
         <p className={[user ? classes.user : '', classes.username].join(' ')}>{player.username}</p>
       </div>
       {
@@ -60,8 +60,8 @@ const styles = {
     padding: '8px',
   },
   hidden: {
-    width: '40px',
-    height: '20px',
+    width: '55px',
+    height: '25px',
     backgroundColor: 'black',
     color: 'white',
     display: 'flex',

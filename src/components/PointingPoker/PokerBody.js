@@ -13,7 +13,7 @@ class PokerBody extends React.Component {
           <Player isShowingVotes={isShowingVotes} user player={user} vote={playersVote} />
           <Divider light />
           { players && players.map((p, i) =>
-            <div key={i}>
+            <div key={i + p.id}>
               <Player isShowingVotes={isShowingVotes} player={p} vote={otherVotes[p.id]} ready={playersReady[p.id]} />
               <Divider light/>
             </div>

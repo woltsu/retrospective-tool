@@ -18,7 +18,7 @@ import {
 class PointingPoker extends React.Component {
   componentDidMount = () => {
     socketService.addListener('clear votes', () => this.resetState());
-    socketService.addListener('my vote', (data) => this.updateVotes(data));
+    socketService.addListener('my vote', (data) => this.props.updateOtherVotes(data));
     socketService.addListener('voted', (data) => this.props.updatePlayersReady(data));
     socketService.addListener('set poker title', (newTitle) => this.props.updatePokerTitle(newTitle));
     socketService.addListener('show votes', () => {
@@ -80,10 +80,6 @@ class PointingPoker extends React.Component {
   showVotes = () => {
     socketService.emitShowVotes();
     this.props.setShowing(true);
-  }
-
-  updateVotes = (data) => {
-    this.props.updateOtherVotes(data);
   }
 
   clearVotes = () => {

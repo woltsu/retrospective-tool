@@ -31,7 +31,10 @@ const reducer = (state = initialState, action) => {
     };
     
   case UPDATE_OTHER_VOTES: {
-    const updatedVotes = { ...state.otherVotes };
+    const updatedVotes = {};
+    Object.keys(state.otherVotes).forEach((vote) => {
+      updatedVotes[vote] = state.otherVotes[vote];
+    });
     updatedVotes[action.payload.id] = action.payload.vote;
     return {
       ...state,
@@ -46,7 +49,10 @@ const reducer = (state = initialState, action) => {
     };
     
   case UPDATE_PLAYERS_READY: {
-    const updatedPlayersReady = { ...state.playersReady };
+    const updatedPlayersReady = {};
+    Object.keys(state.playersReady).forEach((player) => {
+      updatedPlayersReady[player] = state.playersReady[player];
+    });
     updatedPlayersReady[action.payload] = true;
     return {
       ...state,

@@ -9,7 +9,7 @@ const FrontPageListItems = ({ actions }) => {
         <ListItemIcon>
           <AddIcon />
         </ListItemIcon>
-        <ListItemText primary='New project' />
+        <ListItemText primary='New room' />
       </ListItem>
     </div>
   );

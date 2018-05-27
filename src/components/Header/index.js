@@ -30,7 +30,7 @@ const Header = (props) => {
           <MenuIcon />
         </IconButton>
         <Typography variant='title' color='inherit' className={classes.flex}>
-          { (props.projectName && `Project ${props.projectName}`) || 'Retrospective tool' }
+          { (props.projectName && `Room ${props.projectName}`) || 'Retrospective tool' }
         </Typography>
       </Toolbar>
     </AppBar>

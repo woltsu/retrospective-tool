@@ -119,15 +119,18 @@ const reducer = (state = initialState, action) => {
   }
 
   case SET_OTHER_PLAYER_AVATAR_ID: {
-    let updatedPlayers = state.socketUsers;
-    updatedPlayers.forEach((player, i) => {
+    let newUsers = [];
+    state.socketUsers.forEach((user) => {
+      newUsers = newUsers.concat({ ...user });
+    });
+    newUsers.forEach((player, i) => {
       if (player.id === action.payload.playerId) {
-        updatedPlayers[i] = { ...player, avatarId: action.payload.avatarId };
+        newUsers[i] = { ...player, avatarId: action.payload.avatarId };
       }
     });
     return {
       ...state,
-      socketUsers: updatedPlayers
+      socketUsers: newUsers
     };
   }
 

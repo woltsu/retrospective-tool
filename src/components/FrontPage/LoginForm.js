@@ -52,7 +52,7 @@ class LoginForm extends React.Component {
       <div className={classes.formStyle}>
         <UsernameDialog open={usernamePending} />
         <Card className={classes.cardContainer}>
-          <CardHeader title='Login to project' className={classes.cardHeader}/>
+          <CardHeader title='Login to room' className={classes.cardHeader}/>
           <CardContent>
             <form onSubmit={this.onSubmit} noValidate autoComplete='off'>
               <TextField

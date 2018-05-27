@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import CssBaseline from 'material-ui/CssBaseline';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import FrontPage from './components/FrontPage';
 import Header from './components/Header';
 import Drawer from './components/Drawer';
@@ -28,8 +28,11 @@ class App extends React.Component {
           <Header />
           <Drawer />
           <Notifications />
-          <Route exact path='/' render={() => <FrontPage />} />
-          <Route exact path='/project/:name' render={() => <Project />} />
+          <Switch>
+            <Route exact path='/' render={() => <FrontPage />} />
+            <Route exact path='/room/:name' render={() => <Project />} />
+            <Route exact path='*' render={() => <Redirect to='/' />} />
+          </Switch>
         </div>
       </Router>
     );
