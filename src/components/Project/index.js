@@ -12,7 +12,6 @@ import {
   onlyRemoveComment,
   addNewSocketUser,
   removeSocketUser,
-  projectLogout,
 } from '../../reducers/projectReducer';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
@@ -178,7 +177,6 @@ const ConnectedProject = connect(
     onlyRemoveComment,
     addNewSocketUser,
     removeSocketUser,
-    projectLogout
   }
 )(Project);
 

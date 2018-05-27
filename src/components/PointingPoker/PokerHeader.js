@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Card, { CardContent } from 'material-ui/Card';
-import Input from 'material-ui/Input';
+import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 
 class PokerHeader extends React.Component {
@@ -17,9 +17,11 @@ class PokerHeader extends React.Component {
     return (
       <Card className={classes.headerContainer}>
         <CardContent className={classes.cardContent}>
-          <Input
+          <TextField
+            label='Title'
+            name='title'
+            autoComplete='off'
             fullWidth
-            placeholder='TITLE'
             value={pokerTitle || ''}
             onChange={(e) => updatePokerTitle(e.target.value)}
           />
