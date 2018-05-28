@@ -13,6 +13,7 @@ class UsernameDialog extends React.Component {
       username: ''
     };
   }
+
   handleClose = () => {
     this.props.setProjectSocketUsername(this.state.username);
   }
@@ -22,25 +23,29 @@ class UsernameDialog extends React.Component {
       <Dialog open={this.props.open}>
         <DialogTitle id='form-dialog-title'>Username</DialogTitle>
         <DialogContent>
-          <TextField
-            autoComplete='off'
-            name='username'
-            label='Username'
-            type='text'
-            margin='dense'
-            fullWidth
-            autoFocus
-            onChange = {(e) => this.setState({ username: e.target.value })}
-          />
-          <DialogActions>
-            <Button
-              disabled={this.state.username.length === 0 || this.state.username.length >= 20}
-              variant='raised' onClick={() => this.handleClose()}
-              color='primary'
-            >
-                    OK
-            </Button>
-          </DialogActions>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <TextField
+              autoComplete='off'
+              name='username'
+              label='Username'
+              type='text'
+              margin='dense'
+              fullWidth
+              autoFocus
+              onChange = {(e) => this.setState({ username: e.target.value })}
+            />
+            <DialogActions>
+              <Button
+                type='submit'
+                disabled={this.state.username.length === 0 || this.state.username.length >= 20}
+                variant='raised'
+                onClick={() => this.handleClose()}
+                color='primary'
+              >
+                      OK
+              </Button>
+            </DialogActions>
+          </form>
         </DialogContent>
       </Dialog>
     );

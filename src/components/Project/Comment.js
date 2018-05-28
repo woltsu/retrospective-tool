@@ -20,7 +20,8 @@ const styles = {
   },
   comment: {
     flex: 1,
-    height: '100px'
+    height: '100px',
+    paddingRight: '52px'
   },
   star: {
     position: 'absolute',
@@ -53,6 +54,10 @@ const styles = {
     position: 'relative',
     left: '5px',
     bottom: '3px'
+  },
+  content: {
+    maxHeight: '48px',
+    overflowY: 'auto'
   }
 };
 
@@ -99,7 +104,7 @@ class Comment extends React.Component {
       <div className={classes.commentContainer}>
         <Card className={classes.comment} style={{ backgroundColor }}>
           <CardContent>
-            <Typography component="p">
+            <Typography className={classes.content} component="p">
               { content }
             </Typography>
             <Typography component="p" className={classes.dateContainer}>
