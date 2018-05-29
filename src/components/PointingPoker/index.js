@@ -29,7 +29,9 @@ class PointingPoker extends React.Component {
     socketService.addListener('joined', (data) => {
       const { isShowingVotes, otherVotes, pokerTitle } = this.props;
       let playersReady = this.props.playersReady;
-      if (this.props.playersVote) {
+      if (isShowingVotes && this.props.playersVote) {
+        otherVotes[socketService.getId()] = this.props.playersVote;
+      } else if (this.props.playersVote) {
         playersReady[socketService.getId()] = true;
       }
       const currentState = { isShowingVotes, otherVotes, playersReady, pokerTitle };

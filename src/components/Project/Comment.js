@@ -74,7 +74,7 @@ class Comment extends React.Component {
     this.setState({ important: this.props.comment.important });
   }
 
-  componentWillReceiveProps = (newProps) => {
+  UNSAFE_componentWillReceiveProps = (newProps) => {
     this.setState({ important: newProps.comment.important });
   }
 
