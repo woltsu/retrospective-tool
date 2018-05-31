@@ -6,6 +6,7 @@ const UPDATE_PLAYERS_READY = 'Poker update players ready';
 const CLEAR_PLAYERS_READY = 'Poker clear players ready';
 const UPDATE_POKER_TITLE = 'Poker update poker title';
 const SET_AVATAR_ID = 'Poker set avatar id';
+export const RESET_STATE = 'Poker reset state';
 
 const initialState = {
   playersVote: null,
@@ -77,6 +78,8 @@ const reducer = (state = initialState, action) => {
       ...state,
       avatarId: action.payload
     };
+
+  case RESET_STATE: return initialState;
     
   default: return state;
   }

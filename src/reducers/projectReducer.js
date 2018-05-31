@@ -1,6 +1,7 @@
 import projectService from '../services/projectService';
 import commentService from '../services/commentService';
 import socketService from '../services/socketService';
+import { RESET_STATE } from './pokerReducer';
 const PROJECT_LOGIN = 'Project login';
 const PROJECT_LOGIN_SUCCESSFUL = 'Project login successful';
 const PROJECT_LOGIN_FAILURE = 'Project login failure';
@@ -190,7 +191,15 @@ export const removeSocketUser = (user) => {
 };
 
 export const projectLogout = () => {
-  return { type: PROJECT_LOGOUT };
+  return async (dispatch) => {
+    dispatch({
+      type: RESET_STATE
+    });
+
+    dispatch({
+      type: PROJECT_LOGOUT
+    });
+  }
 };
 
 export const setComments = (project) => {

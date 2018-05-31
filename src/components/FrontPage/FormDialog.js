@@ -55,7 +55,7 @@ class FormDialog extends React.Component {
 
     const response = await projectService.create(newProject);
     if (response.error) {
-      this.setState({ error: true, errorMessage: response.error });
+      this.setState({ error: true, errorMessage: response.error, submitDisabled: false, pending: false });
       return;
     }
 
