@@ -199,7 +199,7 @@ export const projectLogout = () => {
     dispatch({
       type: PROJECT_LOGOUT
     });
-  }
+  };
 };
 
 export const setComments = (project) => {
