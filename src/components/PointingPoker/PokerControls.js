@@ -28,7 +28,7 @@ class PokerControls extends React.Component {
 
 const styles = {
   pokerControlsContainer: {
-    flex: 0.2
+    flex: 0.3
   },
   cardContent: {
     display: 'grid',

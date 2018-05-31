@@ -27,7 +27,7 @@ class PokerBody extends React.Component {
 const styles = {
   pokerBodyContainer: {
     overflowY: 'auto',
-    flex: 0.6
+    flex: 0.5
   },
   cardContent: {
     display: 'flex',
